@@ -7,6 +7,10 @@ if(isset($_GET['url'])) {
      $url = 'error';
    } 
 }
+
+if(isset($_GET['width'])) {
+   $width = intval($_GET['width']);
+}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -25,8 +29,14 @@ if(isset($_GET['url'])) {
   .error{color:#c00;margin:2em 0;font-weight:bold;}
   h2 span{color:#fff;background:#393;-moz-border-radius:20px;padding:10px 15px;}
   a{color:#369;}
-  iframe{border:none;width:500px;height:300px;}
+  iframe{border:none;}
   textarea{padding:10px;width:700px;border:none;-webkit-box-shadow:0px 0px 20px rgba(33,123,232,.8);-moz-box-shadow:0px 0px 20px rgba(33,123,232,.8)}
+  #url {width: 40em;}
+  #width {width: 5em;} 
+  form div{padding-bottom:5px;}
+  label{display:block;font-weight:bold;padding:5px 0;}
+  label.il{display:inline;font-weight:bold;padding:5px 0;}
+  input[type=submit]{margin-right:1em;}
   </style>
 </head>
 <body class="yui-skin-sam">
@@ -39,17 +49,28 @@ if(isset($_GET['url'])) {
 <h2><span>1</span> Give us the URL of the SlideShare presentation</h2>
          
         <form action="index.php">
-             <div><label for="url">The SlideShare URL: </label><input type="text" name="url" id="url"><input type="hidden" name="generate" value="yes"><input type="submit" value="give me the embed"/></div>
+             <div><label for="url">The SlideShare URL: </label><input type="url" name="url" id="url" value="<?php echo$url;?>"><input type="hidden" name="generate" value="yes"></div>
+             <div><label for="width" class="il">Slideshow width (leave empty for auto width):</label><input type="width" name="width" id="width"  value="<?php echo $width;?>"></div><div><input type="submit" value="give me the embed!"></div>
         </form>  
 
         <?php if(isset($_GET['generate']) && $url !== 'error') { ?>
-                  
+
+        <?php
+            if($width > 0) {
+              $fwidth = $width + 50;
+              $fheight = intval($fwidth / 1.2);
+            } else {
+              $fwidth =  500;
+              $fheight = 300;
+            }
+        ?>                  
+
 <h2><span>2</span> Does the preview look right?</h2>
-<iframe src="embed.php?url=<?php echo$url;?>"></iframe> 
+<iframe style="border:none;width: <?php echo $fwidth;?>px;height: <?php echo $fheight;?>px" src="embed.php?url=<?php echo$url; if($width>0){echo'&width='.$width;}?>"></iframe> 
 
 <h2><span>3</span> Your embed for copy + paste</h2>
 <form><textarea>
-&lt;iframe style="border:none;width:500px;height:300px;" src="http://thinkphp.ro/apps/php-hacks/slideshare2html/embed.php?url=<?php echo$url;?>"&gt;&lt;/iframe&gt;
+&lt;iframe style="border:none;width: <?php echo $fwidth;?>px;height: <?php echo $fheight;?>px" src="http://thinkphp.ro/apps/php-hacks/slideshare2html/embed.php?url=<?php echo$url; if($width>0){echo'&width='.$width;}?>"&gt;&lt;/iframe&gt;
 </textarea></form>
 
         <?php } ?> 
