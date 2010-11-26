@@ -90,7 +90,7 @@ input{
 
 #fwd {position:absolute;right:10px;}
 
-#count {padding-left:50px;}
+#count{position:absolute;left:48%;bottom:5px;display:block;} 
 
 .preload {position:absolute;  left:-2000px;  top:-2000px;}
 
